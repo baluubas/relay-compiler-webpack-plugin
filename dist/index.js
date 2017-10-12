@@ -119,7 +119,7 @@ class RelayCompilerWebpackPlugin {
     compiler.plugin("this-compilation", params => {
       // Don't know why but it seems we can report errors before
       // stuff actually is building.
-      params.errors.unshift.apply(params.errors, errors);
+      params.errors.push.apply(params.errors, errors);
     });
   }
 }
