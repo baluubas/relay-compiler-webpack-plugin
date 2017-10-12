@@ -16,7 +16,7 @@ export default function getWriter (baseDir: string) {
   return (onlyValidate: boolean, schema: GraphQLSchema, documents: Map<string, Object>, baseDocuments: Map<string, Object>) => {
     return new FileWriter({
       config: {
-        buildCommand: 'relay-compiler-webpack-plugin',
+        formatModule: () => 'relay-compiler-webpack-plugin',
         compilerTransforms: {
           codegenTransforms,
           fragmentTransforms,
@@ -25,6 +25,7 @@ export default function getWriter (baseDir: string) {
         },
         baseDir,
         schemaTransforms,
+        schemaExtensions: [] 
       },
       onlyValidate,
       schema,

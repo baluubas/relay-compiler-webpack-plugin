@@ -16,7 +16,7 @@ function getWriter(baseDir) {
   return (onlyValidate, schema, documents, baseDocuments) => {
     return new _relayCompiler.FileWriter({
       config: {
-        buildCommand: 'relay-compiler-webpack-plugin',
+        formatModule: 'relay-compiler-webpack-plugin',
         compilerTransforms: {
           codegenTransforms,
           fragmentTransforms,
