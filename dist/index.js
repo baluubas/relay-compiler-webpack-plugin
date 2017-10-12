@@ -1,6 +1,6 @@
 'use strict';
 
-var _relayCompiler = require('relay-compiler');
+var _relayCompiler = require('relay-compiler/relay-compiler');
 
 var _fs = require('fs');
 
@@ -41,6 +41,7 @@ class RelayCompilerWebpackPlugin {
     this.writerConfigs = {
       default: {
         getWriter: (...any) => {},
+        isGeneratedFile: filePath => filePath.endsWith('.js') && filePath.includes('__generated__'),
         parser: 'default'
       }
     };
@@ -87,8 +88,10 @@ class RelayCompilerWebpackPlugin {
   apply(compiler) {
     var _this = this;
 
+    let errors = [];
     compiler.plugin('before-compile', (() => {
       var _ref = _asyncToGenerator(function* (compilation, callback) {
+        errors = [];
         try {
           const runner = new _relayCompiler.Runner({
             parserConfigs: _this.parserConfigs,
@@ -96,13 +99,13 @@ class RelayCompilerWebpackPlugin {
             onlyValidate: false,
             skipPersist: true,
             reporter: { reportError: function reportError(ns, e) {
-                compilation.error.push(e);
+                errors.push(e);
               } }
           });
 
           yield runner.compileAll();
         } catch (error) {
-          compilation.errors.push(error);
+          errors.push(error);
         } finally {
           callback();
         }
@@ -112,6 +115,12 @@ class RelayCompilerWebpackPlugin {
         return _ref.apply(this, arguments);
       };
     })());
+
+    compiler.plugin("this-compilation", params => {
+      // Don't know why but it seems we can report errors before
+      // stuff actually is building.
+      params.errors.unshift.apply(params.errors, errors);
+    });
   }
 }
 

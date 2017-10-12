@@ -1,6 +1,6 @@
 // @flow
 
-import { Runner, JSModuleParser } from 'relay-compiler'
+import { Runner, JSModuleParser } from 'relay-compiler/relay-compiler'
 import fs from 'fs'
 import getFilepathsFromGlob from './getFilepathsFromGlob'
 
@@ -82,23 +82,34 @@ class RelayCompilerWebpackPlugin {
   }
 
   apply (compiler: Compiler) {
+    let errors = [];
     compiler.plugin('before-compile', async (compilation, callback) => {
+      errors = [];
       try {
         const runner = new Runner({
           parserConfigs: this.parserConfigs,
           writerConfigs: this.writerConfigs,
           onlyValidate: false,
           skipPersist: true,
-          reporter: { reportError: (ns, e) => { compilation.error.push(e) }}
+          reporter: { reportError: (ns, e) => { 
+            errors.push(e) }}
         })
 
         await runner.compileAll()
       } catch (error) {
-        compilation.errors.push(error)
-      } finally {
+          errors.push(error)
+      }
+      finally {
         callback()
       }
     })
+
+    compiler.plugin("this-compilation", params => {
+      // Don't know why but it seems we can report errors before
+      // stuff actually is building.
+      params.errors.push.apply(params.errors, errors)
+
+    });
   }
 }
 
