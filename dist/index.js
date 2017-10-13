@@ -83,6 +83,7 @@ class RelayCompilerWebpackPlugin {
     this.parserConfigs.default.filepaths = (0, _getFilepathsFromGlob2.default)(options.src, fileOptions);
     this.parserConfigs.default.getParser = _relayCompiler.JSModuleParser.getParser(options.transform);
     this.writerConfigs.default.getWriter = (0, _getWriter2.default)(options.src);
+    this.entry = options.entry;
   }
 
   apply(compiler) {
@@ -92,6 +93,14 @@ class RelayCompilerWebpackPlugin {
     compiler.plugin('before-compile', (() => {
       var _ref = _asyncToGenerator(function* (compilation, callback) {
         errors = [];
+
+        if (!!_this.entry && !compiler.options.entry.hasOwnProperty(_this.entry)) {
+          callback();
+          return;
+        }
+
+        console.log("Compiling relay components: " + _this.entry);
+
         try {
           const runner = new _relayCompiler.Runner({
             parserConfigs: _this.parserConfigs,

@@ -32,6 +32,7 @@ class RelayCompilerWebpackPlugin {
   constructor (options: {
     schema: string,
     src: string,
+    entry: string,
     transform: Array<string>,
     extensions: Array<string>,
     include: Array<string>,
@@ -79,12 +80,21 @@ class RelayCompilerWebpackPlugin {
     this.parserConfigs.default.filepaths = getFilepathsFromGlob(options.src, fileOptions)
     this.parserConfigs.default.getParser = JSModuleParser.getParser(options.transform)
     this.writerConfigs.default.getWriter = getWriter(options.src)
+    this.entry = options.entry;
   }
 
   apply (compiler: Compiler) {
     let errors = [];
     compiler.plugin('before-compile', async (compilation, callback) => {
-      errors = [];
+      errors = []
+      
+      if(!!this.entry && !compiler.options.entry.hasOwnProperty(this.entry)) {
+        callback()
+        return
+      }
+    
+      console.log("Compiling relay components: "+ this.entry);
+            
       try {
         const runner = new Runner({
           parserConfigs: this.parserConfigs,
