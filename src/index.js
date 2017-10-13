@@ -54,10 +54,6 @@ class RelayCompilerWebpackPlugin {
       throw new Error('You must provide a Relay `src` path.')
     }
 
-    if (!fs.existsSync(options.src)) {
-      throw new Error('Could not find your `src` path. Have you provided a fully resolved path?')
-    }
-
     const extensions = options.extensions !== undefined ? options.extensions : [ 'js' ]
     const include = options.include !== undefined ? options.include : [ '**' ]
     const exclude = options.exclude !== undefined ? options.exclude : [
