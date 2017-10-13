@@ -3,6 +3,7 @@
 import { FileWriter, IRTransforms } from 'relay-compiler'
 import type { Map } from 'immutable'
 import type { GraphQLSchema } from 'graphql'
+import formatGeneratedModule from './formatGeneratedModule'
 
 const {
   codegenTransforms,
@@ -16,7 +17,7 @@ export default function getWriter (baseDir: string) {
   return (onlyValidate: boolean, schema: GraphQLSchema, documents: Map<string, Object>, baseDocuments: Map<string, Object>) => {
     return new FileWriter({
       config: {
-        formatModule: () => 'relay-compiler-webpack-plugin',
+        formatModule: formatGeneratedModule,
         compilerTransforms: {
           codegenTransforms,
           fragmentTransforms,
