@@ -54,10 +54,6 @@ class RelayCompilerWebpackPlugin {
       throw new Error('You must provide a Relay Schema path.');
     }
 
-    if (!_fs2.default.existsSync(options.schema)) {
-      throw new Error('Could not find the Schema. Have you provided a fully resolved path?');
-    }
-
     if (!options.src) {
       throw new Error('You must provide a Relay `src` path.');
     }
