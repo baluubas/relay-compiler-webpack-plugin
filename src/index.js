@@ -46,12 +46,12 @@ class RelayCompilerWebpackPlugin {
       throw new Error('You must provide a Relay Schema path.')
     }
 
-    if (!fs.existsSync(options.schema)) {
-      throw new Error('Could not find the Schema. Have you provided a fully resolved path?')
-    }
-
     if (!options.src) {
       throw new Error('You must provide a Relay `src` path.')
+    }
+
+    if (!fs.existsSync(options.src)) {
+      throw new Error('Could not find your `src` path. Have you provided a fully resolved path?')
     }
 
     const extensions = options.extensions !== undefined ? options.extensions : [ 'js' ]
