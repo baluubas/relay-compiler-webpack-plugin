@@ -76,7 +76,6 @@ class RelayCompilerWebpackPlugin {
     this.parserConfigs.default.schema = options.schema;
     this.parserConfigs.default.getSchema = () => (0, _getSchema2.default)(options.schema);
     this.parserConfigs.default.transform = options.transform;
-    this.parserConfigs.default.filepaths = (0, _getFilepathsFromGlob2.default)(options.src, fileOptions);
     this.parserConfigs.default.getParser = _relayCompiler.JSModuleParser.getParser(options.transform);
     this.writerConfigs.default.getWriter = (0, _getWriter2.default)(options.src);
     this.entry = options.entry;
@@ -96,6 +95,7 @@ class RelayCompilerWebpackPlugin {
         }
 
         console.log("Compiling relay components: " + _this.entry);
+        _this.parserConfigs.default.filepaths = (0, _getFilepathsFromGlob2.default)(options.src, fileOptions);
 
         try {
           const runner = new _relayCompiler.Runner({
