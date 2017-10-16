@@ -10,7 +10,7 @@ const {
   fragmentTransforms,
   printTransforms,
   queryTransforms,
-  schemaTransforms,
+  schemaExtensions,
 } = IRTransforms
 
 export default function getWriter (baseDir: string) {
@@ -22,11 +22,10 @@ export default function getWriter (baseDir: string) {
           codegenTransforms,
           fragmentTransforms,
           printTransforms,
-          queryTransforms,
+          queryTransforms
         },
         baseDir,
-        schemaTransforms,
-        schemaExtensions: [] 
+        schemaExtensions: schemaExtensions 
       },
       onlyValidate,
       schema,

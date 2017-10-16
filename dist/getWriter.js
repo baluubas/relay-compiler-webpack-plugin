@@ -17,7 +17,7 @@ const codegenTransforms = _relayCompiler.IRTransforms.codegenTransforms,
       fragmentTransforms = _relayCompiler.IRTransforms.fragmentTransforms,
       printTransforms = _relayCompiler.IRTransforms.printTransforms,
       queryTransforms = _relayCompiler.IRTransforms.queryTransforms,
-      schemaTransforms = _relayCompiler.IRTransforms.schemaTransforms;
+      schemaExtensions = _relayCompiler.IRTransforms.schemaExtensions;
 function getWriter(baseDir) {
   return (onlyValidate, schema, documents, baseDocuments) => {
     return new _relayCompiler.FileWriter({
@@ -30,8 +30,7 @@ function getWriter(baseDir) {
           queryTransforms
         },
         baseDir,
-        schemaTransforms,
-        schemaExtensions: []
+        schemaExtensions: schemaExtensions
       },
       onlyValidate,
       schema,
